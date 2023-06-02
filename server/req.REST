@@ -1,2 +1,4 @@
-GET http://localhost:5500/api/shops
+GET http://localhost:5500/api/food/Pilot
 Content-Type: application/json
+
+

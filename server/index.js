@@ -1,6 +1,6 @@
 const express = require("express");
 const mongoose = require("mongoose");
-const dotenv = require("dotenv").config()
+const dotenv = require("dotenv").config();
 const cors = require("cors");
 
 const app = express();
@@ -14,13 +14,15 @@ const PORT = process.env.PORT || 5500;
 app.use(cors());
 
 // import routes
-const ShopsRoutes = require("./routes/shop");
+const ShopRoutes = require("./routes/shop");
+const CartRoutes = require("./routes/cart");
 
 mongoose
   .connect(process.env.DB_CONNECT)
   .then(() => console.log("DB connected"))
   .catch((err) => console.log(err));
 
-app.use("/", ShopsRoutes);
+app.use("/", ShopRoutes);
+app.use("/cart", CartRoutes);
 
 app.listen(PORT, () => console.log(`Server connected on PORT ${PORT}`));
