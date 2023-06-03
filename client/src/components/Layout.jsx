@@ -1,12 +1,24 @@
 import { Outlet, NavLink } from "react-router-dom";
+import { useSelector } from "react-redux";
+
+const setActive = ({ isActive }) => (isActive ? "text-sky-600" : "");
 
 const Layout = () => {
+  const qtyItemsInCart = useSelector((state) => state.cart.cart.length);
+
   return (
-    <div className='flex flex-col'>
-      <header className='bg-slate-200 px-3 py-3 text-2xl pl-8'>
-        <NavLink to='/'>Shop</NavLink>
-        <span> | </span>
-        <NavLink to='cart'>Shopping Cart</NavLink>
+    <div className='flex flex-col '>
+      <header className='bg-slate-200 px-3 py-5 pl-8 text-2xl '>
+        <div className='relative m-auto w-[90%]'>
+          <NavLink to='/' className={setActive}>
+            Shop
+          </NavLink>
+          <span> | </span>
+          <NavLink to='cart' className={setActive}>
+            Shopping Cart
+          </NavLink>
+          <div className='absolute right-[-20px] top-[-10px] rounded-full border border-sky-600 px-2 text-sm'>{qtyItemsInCart}</div>
+        </div>
       </header>
       <Outlet />
     </div>

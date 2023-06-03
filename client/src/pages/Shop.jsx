@@ -1,15 +1,27 @@
 import { useState, useEffect } from "react";
 import axios from "axios";
+import { useDispatch } from "react-redux";
+
+// import { addFoodToCart } from "../store/counterSlice";
+import { addToCart } from "../store/cartSlice";
 
 const Shop = () => {
   const [shops, setShops] = useState([]);
   const [food, setFood] = useState([]);
+  const [activeButton, setActiveButton] = useState(null);
+
+  const dispatch = useDispatch();
+
+  const handleIsClicked = (food) => {
+    // dispatch(addFoodToCart());
+    const foodWithQuantity = { ...food, quantity: 1 };
+    dispatch(addToCart(foodWithQuantity));
+  };
 
   const getAllShops = async () => {
     try {
       const res = await axios.get("http://localhost:5500/api/shops");
       setShops(res.data);
-      console.log("render");
     } catch (error) {
       console.log(error);
     }
@@ -19,13 +31,26 @@ const Shop = () => {
     try {
       const foodByShop = await axios.get(`http://localhost:5500/api/food/${shop}`);
       setFood(foodByShop.data);
+      localStorage.setItem("food", JSON.stringify([...foodByShop.data]));
     } catch (error) {
       console.log(error);
     }
   };
 
+  const handleShopButtonClick = (shop) => {
+    if (activeButton === shop) {
+      setActiveButton(null);
+      setFood([]);
+      localStorage.setItem("food", JSON.stringify([]));
+    } else {
+      setActiveButton(shop);
+      getFoodByShop(shop);
+    }
+  };
+
   useEffect(() => {
     getAllShops();
+    setFood(JSON.parse(localStorage.getItem("food")) || []);
   }, []);
 
   return (
@@ -34,7 +59,12 @@ const Shop = () => {
         <h2 className='my-5 text-center text-2xl font-bold'>Shops:</h2>
         <div className='flex flex-col gap-5'>
           {shops.map((shop) => (
-            <button key={shop._id} onClick={() => getFoodByShop(shop.title)} className='rounded border bg-slate-50 py-2 text-xl hover:bg-slate-100'>
+            <button
+              key={shop._id}
+              onClick={() => handleShopButtonClick(shop.title)}
+              className={`rounded border py-2 text-xl hover:bg-sky-300 disabled:bg-slate-50 ${activeButton === shop.title ? "bg-sky-200" : "bg-sky-100"}`}
+              disabled={activeButton && activeButton !== shop.title}
+            >
               {shop.title}
             </button>
           ))}
@@ -43,19 +73,21 @@ const Shop = () => {
       <div className='border p-3 md:basis-[70%]'>
         <h2 className='my-5 text-center text-2xl font-bold'>food</h2>
         <div className='flex flex-col gap-8'>
-          {food.map((food) => (
-            <div key={food.id} className='border md:flex'>
+          {food.map((item) => (
+            <div key={item.imgUrl} className='rounded-xl border p-5 md:flex'>
               <div className='max-w-md'>
-                <img src={food.imgUrl} alt='' />
+                <img src={item.imgUrl} alt='' />
               </div>
-              <div className='my-5 flex justify-between'>
+              <div className='my-5 flex items-center justify-between p-5'>
                 <div className='flex flex-col'>
-                  <h3 className='mb-5 text-2xl font-bold'>{food.title}</h3>
-                  <p className='text-xl'>${food.price}</p>
+                  <h3 className='mb-5 text-2xl font-bold'>{item.title}</h3>
+                  <p className='text-xl'>${item.price}</p>
                 </div>
-                <div className='flex flex-col'>
-                  <p className='mb-5 text-xl text-sky-600'>{food.shop}</p>
-                  <button className='rounded-3xl border bg-sky-200 px-5 py-3 text-xl text-sky-900 hover:bg-sky-300'>add to cart</button>
+                <div className='flex h-full flex-col items-center justify-center '>
+                  <p className='mb-5 text-xl text-sky-600'>{item.shop}</p>
+                  <button onClick={() => handleIsClicked(item)} className={`min-w-[140px] rounded-3xl border bg-sky-200 px-5 py-3 text-xl text-sky-900 hover:bg-sky-300`}>
+                    add to cart
+                  </button>
                 </div>
               </div>
             </div>
