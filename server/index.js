@@ -5,17 +5,16 @@ const cors = require("cors");
 
 const app = express();
 
-// midleware
-// to process JSON-data that comes from requests
+//* midleware
+//* to process JSON-data that comes from requests
 app.use(express.json());
 
 const PORT = process.env.PORT || 5500;
 
 app.use(cors());
 
-// import routes
+//* import routes
 const ShopRoutes = require("./routes/shop");
-const CartRoutes = require("./routes/cart");
 
 mongoose
   .connect(process.env.DB_CONNECT)
@@ -23,6 +22,5 @@ mongoose
   .catch((err) => console.log(err));
 
 app.use("/", ShopRoutes);
-app.use("/cart", CartRoutes);
 
 app.listen(PORT, () => console.log(`Server connected on PORT ${PORT}`));

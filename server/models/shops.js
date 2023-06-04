@@ -7,4 +7,4 @@ const ShopSchema = new mongoose.Schema({
   },
 });
 
-module.exports = mongoose.model("shop", ShopSchema);
+module.exports = mongoose.model("shops", ShopSchema);

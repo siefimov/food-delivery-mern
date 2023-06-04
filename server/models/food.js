@@ -1,6 +1,6 @@
 const mongoose = require("mongoose");
 
-const FoodSchema = new mongoose.Schema({
+const foodSchema = new mongoose.Schema({
   title: {
     type: String,
     required: true,
@@ -19,4 +19,4 @@ const FoodSchema = new mongoose.Schema({
   },
 });
 
-module.exports = mongoose.model("fooditems", FoodSchema);
+module.exports = mongoose.model("fooditems", foodSchema);
