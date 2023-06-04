@@ -1,5 +1,6 @@
 import { useSelector, useDispatch } from "react-redux";
 import { useState, useEffect } from "react";
+import axios from "axios";
 
 import UserForm from "../components/UserForm";
 
@@ -7,19 +8,20 @@ import { clearCart, getCart, updateCartItem } from "../store/cartSlice";
 
 export const Cart = () => {
   const dispatch = useDispatch();
+
   const foodInCart = useSelector((state) => state.cart.cart);
-  const totalSum = foodInCart.length > 0 ? foodInCart.reduce((acc, cur) => acc + Number(cur.price) * cur.quantity, 0) : 0;
-
-  const updateQuantity = (foodId, newQuantity) => {
-    dispatch(updateCartItem({ foodId, newQuantity }));
-  };
-
   const [user, setUser] = useState({
     name: "",
     email: "",
     tel: "",
     address: "",
   });
+
+  const totalSum = foodInCart.length > 0 ? foodInCart.reduce((acc, cur) => acc + Number(cur.price) * cur.quantity, 0) : 0;
+
+  const updateQuantity = (foodId, newQuantity) => {
+    dispatch(updateCartItem({ foodId, newQuantity }));
+  };
 
   const handleUserData = (e) => {
     setUser({
@@ -32,6 +34,15 @@ export const Cart = () => {
     dispatch(clearCart());
   };
 
+  const handleSubmit = async (user, foodInCart, totalSum) => {
+    const newOrder = await axios.post("http://localhost:5500/api/order", {
+      user: user,
+      products: foodInCart,
+      totalSum: totalSum
+    });
+    console.log(newOrder.data);
+  };
+
   useEffect(() => {
     dispatch(getCart());
   }, []);
@@ -42,9 +53,9 @@ export const Cart = () => {
       <div className='flex w-full flex-col'>
         <div>
           {foodInCart.map((food) => (
-            <div key={food.imgUrl} className='mb-5 flex flex-col items-center justify-around rounded-xl border p-5 md:flex-row'>
+            <div key={food._id} className='mb-5 flex flex-col items-center justify-around rounded-xl border bg-slate-50 p-5 md:flex-row'>
               <div className='max-w-md'>
-                <img src={food.imgUrl} alt='' />
+                <img src={food.imgUrl} alt={food.title} />
               </div>
               <div className='my-5 flex justify-between md:basis-[40%]'>
                 <div className='flex flex-col '>
@@ -72,7 +83,9 @@ export const Cart = () => {
           <button onClick={handleClearCart} className='rounded-full border bg-red-300 px-8 py-2'>
             clear Cart
           </button>
-          <button className='rounded-full border bg-emerald-400 px-8 py-2'>submit</button>
+          <button onClick={() => handleSubmit(user, foodInCart, totalSum)} className='rounded-full border bg-emerald-400 px-8 py-2'>
+            submit
+          </button>
         </div>
       </div>
     </div>

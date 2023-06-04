@@ -12,12 +12,6 @@ const Shop = () => {
 
   const dispatch = useDispatch();
 
-  const handleIsClicked = (food) => {
-    // dispatch(addFoodToCart());
-    const foodWithQuantity = { ...food, quantity: 1 };
-    dispatch(addToCart(foodWithQuantity));
-  };
-
   const getAllShops = async () => {
     try {
       const res = await axios.get("http://localhost:5500/api/shops");
@@ -35,6 +29,11 @@ const Shop = () => {
     } catch (error) {
       console.log(error);
     }
+  };
+
+  const handleIsClicked = (food) => {
+    const foodWithQuantity = { ...food, quantity: 1 };
+    dispatch(addToCart(foodWithQuantity));
   };
 
   const handleShopButtonClick = (shop) => {
@@ -74,7 +73,7 @@ const Shop = () => {
         <h2 className='my-5 text-center text-2xl font-bold'>food</h2>
         <div className='flex flex-col gap-8'>
           {food.map((item) => (
-            <div key={item.imgUrl} className='rounded-xl border p-5 md:flex'>
+            <div key={item.imgUrl} className='rounded-xl border bg-slate-100 p-5 md:flex'>
               <div className='max-w-md'>
                 <img src={item.imgUrl} alt='' />
               </div>
