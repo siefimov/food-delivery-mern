@@ -13,7 +13,7 @@ const Layout = () => {
           <NavLink to='/' className={setActive}>
             Shop
           </NavLink>
-          <span> | </span>
+          <span className="mx-0"> | </span>
           <NavLink to='cart' className={setActive}>
             Shopping Cart
           </NavLink>

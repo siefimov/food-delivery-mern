@@ -2,9 +2,10 @@ import { useSelector, useDispatch } from "react-redux";
 import { useState, useEffect } from "react";
 import axios from "axios";
 
+import Map from "../components/Map";
 import UserForm from "../components/UserForm";
 
-import { clearCart, getCart, updateCartItem } from "../store/cartSlice";
+import { clearCart, getCart, updateCartItem, removeFromCart } from "../store/cartSlice";
 
 export const Cart = () => {
   const dispatch = useDispatch();
@@ -34,13 +35,19 @@ export const Cart = () => {
     dispatch(clearCart());
   };
 
+  const handleRemoveFromCart = (id) => {
+    dispatch(removeFromCart(id));
+  };
+
   const handleSubmit = async (user, foodInCart, totalSum) => {
     const newOrder = await axios.post("http://localhost:5500/api/order", {
       user: user,
       products: foodInCart,
-      totalSum: totalSum
+      totalSum: totalSum,
     });
-    console.log(newOrder.data);
+    console.log(newOrder);
+    dispatch(clearCart());
+    setUser({ name: "", email: "", tel: "", address: "" });
   };
 
   useEffect(() => {
@@ -49,11 +56,14 @@ export const Cart = () => {
 
   return (
     <div className='m-auto my-8 flex w-[90%] flex-col gap-8 md:flex-row'>
-      <UserForm name={user.name} email={user.email} tel={user.tel} address={user.address} onChange={handleUserData} />
+      <div className='flex flex-col gap-5 md:basis-[40%]'>
+        <Map />
+        <UserForm name={user.name} email={user.email} tel={user.tel} address={user.address} onChange={handleUserData} />
+      </div>
       <div className='flex w-full flex-col'>
         <div>
           {foodInCart.map((food) => (
-            <div key={food._id} className='mb-5 flex flex-col items-center justify-around rounded-xl border bg-slate-50 p-5 md:flex-row'>
+            <div key={food._id} className='mb-5 flex flex-col gap-5 items-center justify-around rounded-xl border bg-slate-50 p-5 md:flex-row'>
               <div className='max-w-md'>
                 <img src={food.imgUrl} alt={food.title} />
               </div>
@@ -62,9 +72,9 @@ export const Cart = () => {
                   <h3 className='mb-5 text-2xl font-bold'>{food.title}</h3>
                   <p className='text-xl'>${food.price}</p>
                 </div>
-                <div className='flex flex-col items-end'>
+                <div className='flex flex-col items-center'>
                   <p className='mb-5 text-xl text-sky-600'>{food.shop}</p>
-                  <div className='flex w-24 justify-between rounded-full border'>
+                  <div className='mb-4 flex w-28 justify-between rounded-full border'>
                     <div onClick={() => updateQuantity(food._id, food.quantity + 1)} className='cursor-pointer rounded-full border bg-slate-200 px-2'>
                       +
                     </div>
@@ -73,6 +83,9 @@ export const Cart = () => {
                       -
                     </div>
                   </div>
+                  <button onClick={() => handleRemoveFromCart(food._id)} className='mt-2 rounded-full border bg-red-300 px-7 py-2'>
+                    delete
+                  </button>
                 </div>
               </div>
             </div>

@@ -53,7 +53,7 @@ const Shop = () => {
   }, []);
 
   return (
-    <div className='m-auto flex w-[90%] flex-col flex-wrap md:flex-row'>
+    <div className='m-auto flex w-[90%] flex-col flex-wrap pb-12 md:flex-row'>
       <div className='border p-3 pb-5 md:basis-[30%]'>
         <h2 className='my-5 text-center text-2xl font-bold'>Shops:</h2>
         <div className='flex flex-col gap-5'>
