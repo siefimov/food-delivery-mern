@@ -1,6 +1,6 @@
 const express = require("express");
 const mongoose = require("mongoose");
-const dotenv = require("dotenv").config();
+require("dotenv").config();
 const cors = require("cors");
 
 const app = express();
@@ -9,7 +9,7 @@ const app = express();
 //* to process JSON-data that comes from requests
 app.use(express.json());
 
-const PORT = process.env.PORT || 5500;
+const PORT_APP = process.env.PORT || 5500;
 
 app.use(cors());
 
@@ -23,4 +23,4 @@ mongoose
 
 app.use("/", ShopRoutes);
 
-app.listen(PORT, () => console.log(`Server connected on PORT ${PORT}`));
+app.listen(PORT_APP, () => console.log(`Server connected on PORT ${PORT_APP}`));
