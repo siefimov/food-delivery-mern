@@ -40,7 +40,7 @@ export const Cart = () => {
   };
 
   const handleSubmit = async (user, foodInCart, totalSum) => {
-    const newOrder = await axios.post("http://localhost:5500/api/order", {
+    const newOrder = await axios.post("https://fooddeliveryapp01.herokuapp.com/api/order", {
       user: user,
       products: foodInCart,
       totalSum: totalSum,
