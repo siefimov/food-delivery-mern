@@ -14,7 +14,7 @@ const Shop = () => {
 
   const getAllShops = async () => {
     try {
-      const res = await axios.get("http://localhost:5500/api/shops");
+      const res = await axios.get("https://fooddeliveryapp01.herokuapp.com/api/shops");
       console.log(res.data);
       setShops(res.data);
     } catch (error) {
@@ -24,7 +24,7 @@ const Shop = () => {
 
   const getFoodByShop = async (shop) => {
     try {
-      const foodByShop = await axios.get(`http://localhost:5500/api/food/${shop}`);
+      const foodByShop = await axios.get(`https://fooddeliveryapp01.herokuapp.com/api/food/${shop}`);
       setFood(foodByShop.data);
       localStorage.setItem("food", JSON.stringify([...foodByShop.data]));
     } catch (error) {
