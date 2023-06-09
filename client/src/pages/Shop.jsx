@@ -3,7 +3,8 @@ import axios from "axios";
 import { useDispatch } from "react-redux";
 
 import { addToCart } from "../store/cartSlice";
-import Button from "../components/Button";
+import ShopButton from "../components/ShopButton";
+import FoodList from "../components/FoodList";
 
 const Shop = () => {
   const [shops, setShops] = useState([]);
@@ -59,7 +60,7 @@ const Shop = () => {
         <h2 className='my-5 text-center text-2xl font-bold'>Shops:</h2>
         <div className='flex flex-col gap-5'>
           {shops.map((shop) => (
-            <Button key={shop._id} shop={shop} title={shop.title} activeButton={activeButton} handleShopButtonClick={handleShopButtonClick} />
+            <ShopButton key={shop._id} shop={shop} title={shop.title} activeButton={activeButton} handleShopButtonClick={handleShopButtonClick} />
           ))}
         </div>
       </div>
@@ -69,23 +70,7 @@ const Shop = () => {
         </h2>
         <div className='flex h-[100vh] flex-col gap-8 overflow-y-auto'>
           {food.map((item) => (
-            <div key={item.imgUrl} className='rounded-xl border bg-slate-100 p-5 md:flex'>
-              <div className='max-w-md'>
-                <img src={item.imgUrl} alt='' />
-              </div>
-              <div className='my-5 flex items-center justify-between p-5'>
-                <div className='flex flex-col'>
-                  <h3 className='mb-5 text-2xl font-bold'>{item.title}</h3>
-                  <p className='text-xl'>${item.price}</p>
-                </div>
-                <div className='flex h-full flex-col items-center justify-center '>
-                  <p className='mb-5 text-xl text-sky-600'>{item.shop}</p>
-                  <button onClick={() => handleIsClicked(item)} className={`min-w-[140px] rounded-3xl border bg-sky-200 px-5 py-3 text-xl text-sky-900 hover:bg-sky-300`}>
-                    add to cart
-                  </button>
-                </div>
-              </div>
-            </div>
+            <FoodList key={item.imgUrl} item={item} handleIsClicked={handleIsClicked} />
           ))}
         </div>
       </div>
