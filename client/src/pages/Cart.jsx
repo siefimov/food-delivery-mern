@@ -55,7 +55,7 @@ export const Cart = () => {
   }, []);
 
   return (
-    <div className='m-auto my-8 flex w-[90%] flex-col gap-8 md:flex-row'>
+    <div className='m-auto my-8 flex w-[90%] flex-col gap-8 md:flex-row mt-20'>
       <div className='flex flex-col gap-5 md:basis-[40%]'>
         <Map />
         <UserForm name={user.name} email={user.email} tel={user.tel} address={user.address} onChange={handleUserData} />

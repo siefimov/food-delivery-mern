@@ -8,7 +8,7 @@ const Layout = () => {
 
   return (
     <div className='flex flex-col '>
-      <header className='bg-slate-200 px-3 py-5 pl-8 text-2xl '>
+      <header className='bg-slate-200 px-3 py-5 pl-8 text-2xl fixed w-[100vw]'>
         <div className='relative ml-8 max-w-max'>
           <NavLink to='/' className={setActive}>
             Shop
@@ -21,6 +21,7 @@ const Layout = () => {
         </div>
       </header>
       <Outlet />
+      <footer>footer</footer>
     </div>
   );
 };
