@@ -52,7 +52,7 @@ export const Cart = () => {
 
   useEffect(() => {
     dispatch(getCart());
-  }, []);
+  }, [dispatch]);
 
   return (
     <div className='m-auto my-8 flex w-[90%] flex-col gap-8 md:flex-row mt-20'>

@@ -3,6 +3,7 @@ import axios from "axios";
 import { useDispatch } from "react-redux";
 
 import { addToCart } from "../store/cartSlice";
+import Button from "../components/Button";
 
 const Shop = () => {
   const [shops, setShops] = useState([]);
@@ -53,25 +54,20 @@ const Shop = () => {
   }, []);
 
   return (
-    <div className='m-auto flex w-[90%] flex-col flex-wrap pb-12 md:flex-row mt-24'>
-      <div className='border p-3 pb-5 md:basis-[30%]'>
+    <div className='m-auto mt-24 flex w-[90%] max-w-[320px] flex-col flex-wrap pb-12 sm:max-w-none md:flex-row'>
+      <div className='border p-2 pb-5 md:basis-[30%]'>
         <h2 className='my-5 text-center text-2xl font-bold'>Shops:</h2>
         <div className='flex flex-col gap-5'>
           {shops.map((shop) => (
-            <button
-              key={shop._id}
-              onClick={() => handleShopButtonClick(shop.title)}
-              className={`rounded border py-2 text-xl hover:bg-sky-300 disabled:bg-slate-50 ${activeButton === shop.title ? "bg-sky-200" : "bg-sky-100"}`}
-              disabled={activeButton && activeButton !== shop.title}
-            >
-              {shop.title}
-            </button>
+            <Button key={shop._id} shop={shop} title={shop.title} activeButton={activeButton} handleShopButtonClick={handleShopButtonClick} />
           ))}
         </div>
       </div>
-      <div className='border p-3 md:basis-[70%]'>
-        <h2 className='my-5 text-center text-2xl font-bold'>food</h2>
-        <div className='flex flex-col gap-8 h-[100vh] overflow-y-auto'>
+      <div className='border p-2 md:basis-[70%]'>
+        <h2 className='my-5 text-center text-2xl font-bold'>
+          Food from <span className='text-sky-600'>{activeButton ? activeButton : "..."}</span>
+        </h2>
+        <div className='flex h-[100vh] flex-col gap-8 overflow-y-auto'>
           {food.map((item) => (
             <div key={item.imgUrl} className='rounded-xl border bg-slate-100 p-5 md:flex'>
               <div className='max-w-md'>
